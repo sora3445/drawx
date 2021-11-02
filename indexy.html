@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Zip File Reader</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+ 
+
+<style>
+html {
+  background: #fafafa;
+  font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+  line-height: 1.5;
+  padding: 1em 1.5em;
+}
+
+pre {
+  background: white;
+  border: thin solid #e6e6e6;
+  font-size: 80%;
+  line-height: 1.7;
+  padding: 1rem;
+}
+
+
+body {
+    margin: 0;            /* Reset default margin */
+}
+iframe {
+    display: block;       /* iframes are inline by default */
+    background: #fff;
+    border: none;         /* Reset default border */
+    height: 100vh;        /* Viewport-relative units */
+    width: 100vw;
+}
+
+</style>
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+ 
+<pre id="output" width="6" height="5"  style="display: none;" ></pre>
+<!-- partial -->
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.0.2/jszip-utils.js"></script>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.js'></script>
+
+<script>
+
+
+
+  var zip = new JSZip();
+ JSZipUtils.getBinaryContent("https://api.codetabs.com/v1/proxy?quest="+window.location.href.replace(/.*\?/, ""), function (err, data) {
+   if(err) {
+      throw err; // or handle the error
+   }
+   var zip = new JSZip();
+ 
+
+    console.log(data)
+    zip.load( data  );
+          var zippedFiles = zip.files;          
+ Object.keys(zippedFiles).forEach(function(key) {
+            if (key.indexOf('__') !== 0) {
+              output.innerText = output.innerText + zippedFiles[key].asText();
+              console.log(   zippedFiles[key].asText() );
+                document.querySelector("body > iframe").srcdoc=document.querySelector("#output").innerText;
+            }
+          });
+
+
+});
+
+
+
+</script>
+
+</body>
+
+<iframe width="80%" height="80%" srcdoc=""></iframe>
+</html>
